@@ -9,6 +9,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -77,9 +78,9 @@ class UserController extends Controller
 
         if (empty($user) || !$user->exists)
             return redirect()->back()->withErrors(['User tidak ditemukan!']);
-        if ($user->tipe_akun == User::TYPE_PEMINJAM && (\Auth::guest() || !(\Auth::user()->tipe_akun == User::TYPE_PENYEDIA || \Auth::user()->tipe_akun == User::TYPE_ADMIN || \Auth::user()->id == $user->id)))
+        if ($user->tipe_akun == User::TYPE_PEMINJAM && (Auth::guest() || !(Auth::user()->tipe_akun == User::TYPE_PENYEDIA || Auth::user()->tipe_akun == User::TYPE_ADMIN || Auth::user()->id == $user->id)))
             return redirect()->back()->withErrors(['Unauthorized page!']);
-        if ($user->tipe_akun==User::TYPE_ADMIN && (\Auth::guest() || \Auth::user()->tipe_akun != User::TYPE_ADMIN))
+        if ($user->tipe_akun==User::TYPE_ADMIN && (Auth::guest() || Auth::user()->tipe_akun != User::TYPE_ADMIN))
             return redirect()->back()->withErrors(['Unauthorized page!']);
 
         return view('user.show')->with(compact('user'));
@@ -105,12 +106,12 @@ class UserController extends Controller
     }
 
     public function gantiPassword(){
-        $user = \Auth::user();
+        $user = Auth::user();
         return view('user.change_password')->with(compact('user'));
     }
 
     public function gantiPasswordAct(Request $request){
-        $user = \Auth::user();
+        $user = Auth::user();
 
         $this->validate($request, [
             'oldpassword' => ['required','string','min:6'],

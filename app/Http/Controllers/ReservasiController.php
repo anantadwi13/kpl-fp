@@ -6,6 +6,7 @@ use App\Reservasi;
 use App\Ruangan;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReservasiController extends Controller
 {
@@ -23,16 +24,16 @@ class ReservasiController extends Controller
      */
     public function index()
     {
-        if (\Auth::user()->tipe_akun == User::TYPE_ADMIN)
+        if (Auth::user()->tipe_akun == User::TYPE_ADMIN)
             $dataReservasi = Reservasi::all();
-        else if (\Auth::user()->tipe_akun == User::TYPE_PENYEDIA) {
+        else if (Auth::user()->tipe_akun == User::TYPE_PENYEDIA) {
             $dataReservasi = [];
-            foreach (Ruangan::whereIdUser(\Auth::user()->id)->get() as $item)
+            foreach (Ruangan::whereIdUser(Auth::user()->id)->get() as $item)
                 foreach ($item->reservasi as $itemreservasi)
                     $dataReservasi[] = $itemreservasi;
         }
         else
-            $dataReservasi = Reservasi::whereIdUser(\Auth::user()->id)->get();
+            $dataReservasi = Reservasi::whereIdUser(Auth::user()->id)->get();
         return view('reservasi.index')->with(compact('dataReservasi'));
     }
 
@@ -105,7 +106,7 @@ class ReservasiController extends Controller
         $reservasi->deskripsi_acara = $request->input('deskripsi');
         $reservasi->time_start = $request->input('time_start');
         $reservasi->time_end = $request->input('time_stop');
-        $reservasi->id_user = \Auth::user()->id;
+        $reservasi->id_user = Auth::user()->id;
         $reservasi->status = Reservasi::STATUS_WAITING;
 
         try{
@@ -137,7 +138,7 @@ class ReservasiController extends Controller
      */
     public function edit(Reservasi $reservasi)
     {
-        if ($reservasi->ruangan->user->id == \Auth::user()->id || \Auth::user()->tipe_akun == User::TYPE_ADMIN){
+        if ($reservasi->ruangan->user->id == Auth::user()->id || Auth::user()->tipe_akun == User::TYPE_ADMIN){
             $ruangan = Ruangan::all();
 
             return view('reservasi.edit')->with(compact('reservasi','ruangan'));
@@ -156,7 +157,7 @@ class ReservasiController extends Controller
      */
     public function update(Request $request, Reservasi $reservasi)
     {
-        if ($reservasi->ruangan->user->id == \Auth::user()->id || \Auth::user()->tipe_akun == User::TYPE_ADMIN) {
+        if ($reservasi->ruangan->user->id == Auth::user()->id || Auth::user()->tipe_akun == User::TYPE_ADMIN) {
             $this->validate($request, [
                 'ruangan' => 'required|exists:ruangan,id',
                 'nama' => 'required|string',
@@ -214,7 +215,7 @@ class ReservasiController extends Controller
         if (!$reservasi->exists)
             return redirect()->back()->withErrors(['Reservasi tidak ditemukan!']);
 
-        if ($reservasi->user->id == \Auth::user()->id || \Auth::user()->tipe_akun == User::TYPE_ADMIN) {
+        if ($reservasi->user->id == Auth::user()->id || Auth::user()->tipe_akun == User::TYPE_ADMIN) {
             try {
                 if ($reservasi->delete())
                     return redirect(route('reservasi.index'))->with('succes', 'Reservasi dibatalkan!');

@@ -10,6 +10,7 @@ use App\Ruangan;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class RuanganController extends Controller
 {
@@ -26,8 +27,8 @@ class RuanganController extends Controller
      */
     public function index()
     {
-        if (\Auth::check() && \Auth::user()->tipe_akun == User::TYPE_PENYEDIA)
-            $dataRuangan = Ruangan::whereIdUser(\Auth::user()->id)->get();
+        if (Auth::check() && Auth::user()->tipe_akun == User::TYPE_PENYEDIA)
+            $dataRuangan = Ruangan::whereIdUser(Auth::user()->id)->get();
         else
             $dataRuangan = Ruangan::all();
 
@@ -84,7 +85,7 @@ class RuanganController extends Controller
         $ruangan->nama = $request->input('nama');
         $ruangan->kode = $request->input('kode');
         $ruangan->id_kategori = $request->input('kategori');
-        $ruangan->id_user = \Auth::user()->id;
+        $ruangan->id_user = Auth::user()->id;
         $ruangan->alamat_jalan = $request->input('alamat');
         $ruangan->alamat_kecamatan = $request->input('kecamatan');
         $ruangan->status = Ruangan::STATUS_AVAILABLE;
@@ -124,7 +125,7 @@ class RuanganController extends Controller
         if (empty($ruangan) || !$ruangan->exists)
             return redirect()->back()->withErrors(['Ruangan tidak ditemukan!']);
 
-        if ($ruangan->user->id == \Auth::user()->id || \Auth::user()->tipe_akun == User::TYPE_ADMIN) {
+        if ($ruangan->user->id == Auth::user()->id || Auth::user()->tipe_akun == User::TYPE_ADMIN) {
             $kategori = Kategori::all();
             $provinsi = Provinsi::all();
             $idkota = $ruangan->kecamatan?$ruangan->kecamatan->kotakab->id:null;
@@ -151,7 +152,7 @@ class RuanganController extends Controller
         if (empty($ruangan) || !$ruangan->exists)
             return redirect()->back()->withErrors(['Ruangan tidak ditemukan!']);
 
-        if ($ruangan->user->id == \Auth::user()->id || \Auth::user()->tipe_akun == User::TYPE_ADMIN) {
+        if ($ruangan->user->id == Auth::user()->id || Auth::user()->tipe_akun == User::TYPE_ADMIN) {
             $this->validate($request, [
                 'nama' => 'required|string',
                 'kode' => 'nullable',
@@ -205,7 +206,7 @@ class RuanganController extends Controller
         if (empty($ruangan) || !$ruangan->exists)
             return redirect()->back()->withErrors(['Ruangan tidak ditemukan!']);
 
-        if ($ruangan->user->id == \Auth::user()->id || \Auth::user()->tipe_akun == User::TYPE_ADMIN) {
+        if ($ruangan->user->id == Auth::user()->id || Auth::user()->tipe_akun == User::TYPE_ADMIN) {
             try{
                 DB::beginTransaction();
                 if ($ruangan->reservasi()->count()>0)
