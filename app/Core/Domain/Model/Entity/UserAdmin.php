@@ -15,8 +15,9 @@ class UserAdmin extends User
         string $noIdentitas,
         string $noHp,
         Alamat $alamat,
-        UserStatus $status
+        UserStatus $status,
+        ?string $hashedPassword = null
     ) {
-        parent::__construct($id, $nama, $username, $email, $noIdentitas, $noHp, $alamat, $status);
+        parent::__construct($id, $nama, $username, $email, $noIdentitas, $noHp, $alamat, $status, $hashedPassword);
     }
 }

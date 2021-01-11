@@ -7,22 +7,18 @@ class Provinsi
     private int $id;
     private int $kodeProvinsi;
     private string $nama;
-    /* @var KotaKab[] */
-    private array $kotaKab;
 
     /**
      * Provinsi constructor.
      * @param int $id
      * @param int $kodeProvinsi
      * @param string $nama
-     * @param KotaKab[] $kotaKab
      */
-    public function __construct(int $id, int $kodeProvinsi, string $nama, array $kotaKab)
+    public function __construct(int $id, int $kodeProvinsi, string $nama)
     {
         $this->id = $id;
         $this->kodeProvinsi = $kodeProvinsi;
         $this->nama = $nama;
-        $this->kotaKab = $kotaKab;
     }
 
     /**
@@ -47,13 +43,5 @@ class Provinsi
     public function getNama(): string
     {
         return $this->nama;
-    }
-
-    /**
-     * @return KotaKab[]
-     */
-    public function getKotaKab(): array
-    {
-        return $this->kotaKab;
     }
 }

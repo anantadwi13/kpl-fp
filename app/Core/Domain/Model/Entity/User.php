@@ -14,8 +14,8 @@ abstract class User
     private string $noIdentitas;
     private string $noHp;
     private Alamat $alamat;
-    private ?string $password;
     private UserStatus $status;
+    private ?string $hashedPassword;
 
     /**
      * User constructor.
@@ -27,6 +27,7 @@ abstract class User
      * @param string $noHp
      * @param Alamat $alamat
      * @param UserStatus $status
+     * @param string|null $hashedPassword
      */
     public function __construct(
         int $id,
@@ -36,7 +37,8 @@ abstract class User
         string $noIdentitas,
         string $noHp,
         Alamat $alamat,
-        UserStatus $status
+        UserStatus $status,
+        ?string $hashedPassword = null
     ) {
         $this->id = $id;
         $this->nama = $nama;
@@ -46,6 +48,7 @@ abstract class User
         $this->noHp = $noHp;
         $this->alamat = $alamat;
         $this->status = $status;
+        $this->hashedPassword = $hashedPassword;
     }
 
     /**
@@ -105,11 +108,12 @@ abstract class User
     }
 
     /**
+     * get hashed password
      * @return string
      */
-    public function getPassword(): ?string
+    public function getHashedPassword(): ?string
     {
-        return $this->password;
+        return $this->hashedPassword;
     }
 
     /**
@@ -121,11 +125,19 @@ abstract class User
     }
 
     /**
-     * @param string|null $password
+     * @param string|null $plainPassword
      */
-    public function setPassword(string $password): void
+    public function setPlainPassword(string $plainPassword): void
     {
-        $this->password = $password;
+        $this->hashedPassword = bcrypt($plainPassword);
+    }
+
+    /**
+     * @param string|null $hashedPassword
+     */
+    public function setHashedPassword(string $hashedPassword): void
+    {
+        $this->hashedPassword = $hashedPassword;
     }
 
 }

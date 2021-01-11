@@ -7,22 +7,21 @@ class KotaKab
     private int $id;
     private int $kodeKota;
     private string $nama;
-    /* @var Kecamatan[] */
-    private array $kecamatan;
+    private ?Provinsi $provinsi;
 
     /**
      * KotaKab constructor.
      * @param int $id
      * @param int $kodeKota
      * @param string $nama
-     * @param Kecamatan[] $kecamatan
+     * @param Provinsi|null $provinsi
      */
-    public function  __construct(int $id, int $kodeKota, string $nama, array $kecamatan)
+    public function __construct(int $id, int $kodeKota, string $nama, ?Provinsi $provinsi = null)
     {
         $this->id = $id;
         $this->kodeKota = $kodeKota;
         $this->nama = $nama;
-        $this->kecamatan = $kecamatan;
+        $this->provinsi = $provinsi;
     }
 
     /**
@@ -50,10 +49,18 @@ class KotaKab
     }
 
     /**
-     * @return Kecamatan[]
+     * @return Provinsi|null
      */
-    public function getKecamatan(): array
+    public function getProvinsi(): ?Provinsi
     {
-        return $this->kecamatan;
+        return $this->provinsi;
+    }
+
+    /**
+     * @param Provinsi|null $provinsi
+     */
+    public function setProvinsi(?Provinsi $provinsi): void
+    {
+        $this->provinsi = $provinsi;
     }
 }
