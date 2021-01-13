@@ -22,7 +22,7 @@ class UserStatus
 
     static function NONACTIVE(): UserStatus
     {
-        return new UserStatus(2);
+        return new UserStatus(1);
     }
 
     static function BANNED(): UserStatus
@@ -36,5 +36,11 @@ class UserStatus
     public function getValue(): int
     {
         return $this->value;
+    }
+
+    public function isEqual(?UserStatus $other): bool
+    {
+        return $other != null
+            && $this->getValue() === $other->getValue();
     }
 }

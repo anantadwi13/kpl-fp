@@ -34,7 +34,7 @@ class ReservasiRepositoryImpl implements ReservasiRepository
      */
     public function getByRuangan(Ruangan $ruangan): array
     {
-        $allReservasi = \App\Reservasi::whereIdRuangan($ruangan->getId());
+        $allReservasi = \App\Reservasi::whereIdRuangan($ruangan->getId()->getValue())->get();
         $listReservasi = [];
 
         foreach ($allReservasi as $reservasi) {
@@ -49,7 +49,7 @@ class ReservasiRepositoryImpl implements ReservasiRepository
      */
     public function getByPeminjam(UserPeminjam $peminjam): array
     {
-        $allReservasi = \App\Reservasi::whereIdUser($peminjam->getId());
+        $allReservasi = \App\Reservasi::whereIdUser($peminjam->getId()->getValue())->get();
         $listReservasi = [];
 
         foreach ($allReservasi as $reservasi) {

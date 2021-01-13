@@ -32,4 +32,10 @@ class ReportStatus
     {
         return $this->value;
     }
+
+    public function isEqual(?ReportStatus $other): bool
+    {
+        return $other != null
+            && $this->getValue() === $other->getValue();
+    }
 }

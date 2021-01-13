@@ -1,7 +1,14 @@
 @extends("layouts.dashboard")
 
 @php
-    /** @var \App\Ruangan $ruangan */
+    /** @var \App\Core\Domain\Model\Entity\Ruangan $ruangan */
+    /** @var \App\Core\Domain\Model\Entity\Kategori[] $kategori */
+    /** @var \App\Core\Domain\Model\Entity\Provinsi[] $provinsi */
+    /** @var \App\Core\Domain\Model\Entity\KotaKab[] $kota */
+    /** @var \App\Core\Domain\Model\Entity\Kecamatan[] $kecamatan */
+    /** @var \App\Core\Domain\Model\ValueObject\Id $idProvinsi */
+    /** @var \App\Core\Domain\Model\ValueObject\Id $idKota */
+    /** @var \App\Core\Domain\Model\ValueObject\Id $idKecamatan */
 @endphp
 
 @section('title','Ruangan')
@@ -33,13 +40,13 @@
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form role="form" method="POST" action="{{route('ruangan.update', $ruangan)}}">
+                <form role="form" method="POST" action="{{route('ruangan.update', $ruangan->getId())}}">
                     {{csrf_field()}}
                     <div class="card-body">
                         <input type="hidden" name="_method" value="PUT">
                         <div class="form-group">
                             <label for="namaRuangan">Nama Ruangan</label>
-                            <input type="text" class="form-control{{ $errors->has('nama') ? ' is-invalid' : '' }}" id="namaRuangan" name="nama" placeholder="Nama Ruangan" value="{{$ruangan->nama}}">
+                            <input type="text" class="form-control{{ $errors->has('nama') ? ' is-invalid' : '' }}" id="namaRuangan" name="nama" placeholder="Nama Ruangan" value="{{$ruangan->getNama()}}">
 
                             @if ($errors->has('nama'))
                                 <span class="invalid-feedback" role="alert">
@@ -49,7 +56,7 @@
                         </div>
                         <div class="form-group">
                             <label for="kodeRuangan">Kode Ruangan</label>
-                            <input type="text" class="form-control{{ $errors->has('kode') ? ' is-invalid' : '' }}" id="kodeRuangan" name="kode" placeholder="Opsional" value="{{$ruangan->kode}}">
+                            <input type="text" class="form-control{{ $errors->has('kode') ? ' is-invalid' : '' }}" id="kodeRuangan" name="kode" placeholder="Opsional" value="{{$ruangan->getKode()}}">
 
                             @if ($errors->has('kode'))
                                 <span class="invalid-feedback" role="alert">
@@ -60,8 +67,8 @@
                         <div class="form-group">
                             <label for="statusRuangan">Status Ruangan</label>
                             <select class="form-control select2{{ $errors->has('status') ? ' is-invalid' : '' }}" name="status" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                                <option value="1" @if($ruangan->status == \App\Ruangan::STATUS_AVAILABLE) selected @endif>Tersedia</option>
-                                <option value="0" @if($ruangan->status == \App\Ruangan::STATUS_MAINTENANCE) selected @endif>Perbaikan</option>
+                                <option value="{{\App\Core\Domain\Model\ValueObject\RuanganStatus::AVAILABLE()->getValue()}}" @if($ruangan->getStatus()->isEqual(\App\Core\Domain\Model\ValueObject\RuanganStatus::AVAILABLE())) selected @endif>Tersedia</option>
+                                <option value="{{\App\Core\Domain\Model\ValueObject\RuanganStatus::MAINTENANCE()->getValue()}}" @if($ruangan->getStatus()->isEqual(\App\Core\Domain\Model\ValueObject\RuanganStatus::MAINTENANCE())) selected @endif>Perbaikan</option>
                             </select>
 
                             @if ($errors->has('status'))
@@ -75,7 +82,7 @@
                             <select class="form-control select2{{ $errors->has('kategori') ? ' is-invalid' : '' }}" name="kategori" style="width: 100%;" tabindex="-1" aria-hidden="true">
                                 <option disabled selected>-</option>
                                 @foreach($kategori as $item)
-                                    <option value="{{$item->id}}" @if($ruangan->id_kategori==$item->id) selected @endif>{{$item->nama}}</option>
+                                    <option value="{{$item->getId()}}" @if($ruangan->getKategori()->getId()->isEqual($item->getId())) selected @endif>{{$item->getNama()}}</option>
                                 @endforeach
                             </select>
 
@@ -87,7 +94,7 @@
                         </div>
                         <div class="form-group">
                             <label for="kodeRuangan">Alamat</label>
-                            <input type="text" class="form-control{{ $errors->has('alamat') ? ' is-invalid' : '' }}" id="alamatRuangan" name="alamat" placeholder="Opsional" value="{{$ruangan->alamat_jalan}}">
+                            <input type="text" class="form-control{{ $errors->has('alamat') ? ' is-invalid' : '' }}" id="alamatRuangan" name="alamat" placeholder="Opsional" value="{{$ruangan->getAlamat() ? $ruangan->getAlamat()->getJalan() : ''}}">
 
                             @if ($errors->has('alamat'))
                                 <span class="invalid-feedback" role="alert">
@@ -100,7 +107,7 @@
                             <select id="provinsi" class="form-control select2{{ $errors->has('provinsi') ? ' is-invalid' : '' }}" name="provinsi">
                                 <option value="" selected>-</option>
                                 @foreach($provinsi as $item)
-                                    <option value="{{$item->id}}" @if($idprovinsi==$item->id) selected @endif>{{$item->nama}}</option>
+                                    <option value="{{$item->getId()}}" @if($item->getId()->isEqual($idProvinsi)) selected @endif>{{$item->getNama()}}</option>
                                 @endforeach
                             </select>
 
@@ -115,7 +122,7 @@
                             <select id="kota" class="form-control select2{{ $errors->has('kota') ? ' is-invalid' : '' }}" name="kota">
                                 <option value="" disabled selected>-</option>
                                 @foreach($kota as $item)
-                                    <option value="{{$item->id}}" @if($idkota==$item->id) selected @endif>{{$item->nama}}</option>
+                                    <option value="{{$item->getId()}}" @if($item->getId()->isEqual($idKota)) selected @endif>{{$item->getNama()}}</option>
                                 @endforeach
                             </select>
 
@@ -130,7 +137,7 @@
                             <select id="kecamatan" class="form-control select2{{ $errors->has('kecamatan') ? ' is-invalid' : '' }}" name="kecamatan">
                                 <option value="" disabled selected>-</option>
                                 @foreach($kecamatan as $item)
-                                    <option value="{{$item->id}}" @if($ruangan->kecamatan->id==$item->id) selected @endif>{{$item->nama}}</option>
+                                    <option value="{{$item->getId()}}" @if($item->getId()->isEqual($idKecamatan)) selected @endif>{{$item->getNama()}}</option>
                                 @endforeach
                             </select>
 

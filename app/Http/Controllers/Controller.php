@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\Domain\Exception\UserUnknownException;
 use App\Core\Domain\Model\Entity\User;
 use App\Transformer\UserTransformer;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -16,9 +17,8 @@ class Controller extends BaseController
 
     /**
      * @return User|null
-     * @throws \App\Core\Domain\Exception\UserUnknownException
      */
-    protected function getUser(): ?User
+    protected function getAuthenticatedUser(): ?User
     {
         /** @var UserTransformer $userTransformer */
         $userTransformer = resolve(UserTransformer::class);
@@ -27,6 +27,10 @@ class Controller extends BaseController
             return null;
         }
 
-        return $userTransformer->fromEloquent(Auth::user());
+        try {
+            return $userTransformer->fromEloquent(Auth::user());
+        } catch (UserUnknownException $e) {
+            return null;
+        }
     }
 }

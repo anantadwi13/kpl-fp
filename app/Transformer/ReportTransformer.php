@@ -44,7 +44,7 @@ class ReportTransformer
     public function toEloquent(Report $data): \App\Report
     {
         $el = new \App\Report();
-        $el->id = $data->getId()->getValue();
+        $el->id = !$data->getId()->isEqual(Id::UNSET()) ? $data->getId()->getValue() : null;
         $el->id_pelapor = $data->getPelapor()->getId()->getValue();
         $el->id_dilapor = $data->getDilapor()->getId()->getValue();
         $el->subject = $data->getSubject();

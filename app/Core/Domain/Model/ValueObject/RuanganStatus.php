@@ -32,4 +32,10 @@ class RuanganStatus
     {
         return $this->value;
     }
+
+    public function isEqual(?RuanganStatus $other): bool
+    {
+        return $other != null
+            && $this->getValue() === $other->getValue();
+    }
 }

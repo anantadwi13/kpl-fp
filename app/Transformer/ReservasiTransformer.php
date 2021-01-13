@@ -62,7 +62,7 @@ class ReservasiTransformer
     public function toEloquent(Reservasi $data): \App\Reservasi
     {
         $el = new \App\Reservasi();
-        $el->id = $data->getId()->getValue();
+        $el->id = !$data->getId()->isEqual(Id::UNSET()) ? $data->getId()->getValue() : null;
         $el->id_ruangan = $data->getRuangan()->getId()->getValue();
         $el->id_user = $data->getPeminjam()->getId()->getValue();
         $el->nama_acara = $data->getAcara()->getNama();

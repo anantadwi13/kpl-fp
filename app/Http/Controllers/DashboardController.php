@@ -43,10 +43,10 @@ class DashboardController extends Controller
     {
         $viewData = [
             'totalKategori' => $this->countKategori->execute(),
-            'totalReport' => $this->getUser() ? $this->countReport->execute($this->getUser()) : null,
-            'totalReservasi' => $this->getUser() ? $this->countReservasi->execute($this->getUser()) : null,
-            'totalRuangan' =>  $this->countRuangan->execute($this->getUser()),
-            'totalUser' => $this->getUser() instanceof UserAdmin ? $this->countUser->execute() : null,
+            'totalReport' => $this->getAuthenticatedUser() ? $this->countReport->execute($this->getAuthenticatedUser()) : null,
+            'totalReservasi' => $this->getAuthenticatedUser() ? $this->countReservasi->execute($this->getAuthenticatedUser()) : null,
+            'totalRuangan' =>  $this->countRuangan->execute($this->getAuthenticatedUser()),
+            'totalUser' => $this->getAuthenticatedUser() instanceof UserAdmin ? $this->countUser->execute() : null,
         ];
 
         return view('dashboard.index', $viewData);

@@ -20,9 +20,9 @@ class KotaKabTransformer
         $this->provinsiTransformer = $provinsiTransformer;
     }
 
-    public function fromEloquent(\App\KotaKab $el): KotaKab
+    public function fromEloquent(\App\KotaKab $el, bool $parseProvinsi = false): KotaKab
     {
-        $provinsi = $el->provinsi ? $this->provinsiTransformer->fromEloquent($el->provinsi) : null;
+        $provinsi = $parseProvinsi && $el->provinsi ? $this->provinsiTransformer->fromEloquent($el->provinsi) : null;
 
         return new KotaKab(
             new Id($el->id),
@@ -35,7 +35,7 @@ class KotaKabTransformer
     public function toEloquent(KotaKab $data): \App\KotaKab
     {
         $el = new \App\KotaKab();
-        $el->id = $data->getId()->getValue();
+        $el->id = !$data->getId()->isEqual(Id::UNSET()) ? $data->getId()->getValue() : null;
         $el->nama = $data->getNama();
         $el->id_provinsi = $data->getProvinsi() ? $data->getProvinsi()->getId()->getValue() : null;
         return $el;

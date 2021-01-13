@@ -1,7 +1,7 @@
 @extends("layouts.dashboard")
 
 @php
-    /** @var \App\Ruangan $ruangan */
+    /** @var \App\Core\Domain\Model\Entity\Ruangan $ruangan */
 @endphp
 
 @section('title','Ruangan')
@@ -13,31 +13,31 @@
                 <div class="card-body alert-info">
                     <div class="form-group">
                         <label>Nama Ruangan</label>
-                        <div>{{$ruangan->nama}}</div>
+                        <div>{{$ruangan->getNama()}}</div>
                     </div>
-                    @if($ruangan->kode)
+                    @if($ruangan->getKode())
                         <div class="form-group">
                             <label>Kode Ruangan</label>
-                            <div>{{$ruangan->kode}}</div>
+                            <div>{{$ruangan->getKode()}}</div>
                         </div>
                     @endif
                     <div class="form-group">
                         <label>Kategori</label>
-                        <div>{{$ruangan->kategori->nama}}</div>
+                        <div>{{$ruangan->getKategori()->getNama()}}</div>
                     </div>
                     <div class="form-group">
                         <label>Pengelola</label>
-                        <div><a href="{{route('user.show',$ruangan->user->username)}}">{{$ruangan->user->nama}}</a></div>
+                        <div><a href="{{route('user.show',$ruangan->getPenyedia()->getUsername())}}">{{$ruangan->getPenyedia()->getNama()}}</a></div>
                     </div>
-                    @if($ruangan->alamat_jalan)
+                    @if($ruangan->getAlamat())
                     <div class="form-group">
                         <label>Alamat</label>
-                        <div>{{$ruangan->alamat_jalan?$ruangan->alamat_jalan.", ".ucwords(strtolower($ruangan->kecamatan->nama)).", ".ucwords(strtolower($ruangan->kecamatan->kotakab->nama)).", ".ucwords(strtolower($ruangan->kecamatan->provinsi->nama)) :""}}</div>
+                        <div>{{$ruangan->getAlamat()?$ruangan->getAlamat()->getJalan().", ".ucwords(strtolower($ruangan->getAlamat()->getKecamatan()->getNama())).", ".ucwords(strtolower($ruangan->getAlamat()->getKotaKab()->getNama())).", ".ucwords(strtolower($ruangan->getAlamat()->getProvinsi()->getNama())) :""}}</div>
                     </div>
                     @endif
                     <div class="form-group">
                         <label>Status</label>
-                        <div>{{$ruangan->status==\App\Ruangan::STATUS_AVAILABLE?"Tersedia":"Maintenance"}}</div>
+                        <div>{{$ruangan->getStatus()->isEqual(\App\Core\Domain\Model\ValueObject\RuanganStatus::AVAILABLE()) ? "Tersedia" : "Maintenance"}}</div>
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@
         <div class="col-lg-12 col-12">
             <div class="card card-dark">
                 <div class="card-header">
-                    <h5>Jadwal Reservasi {{$ruangan->nama}}</h5>
+                    <h5>Jadwal Reservasi {{$ruangan->getNama()}}</h5>
                 </div>
                 <div class="card-body">
                     <div id='calendar'></div>

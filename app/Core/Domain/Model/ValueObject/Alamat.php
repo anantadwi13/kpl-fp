@@ -59,4 +59,13 @@ class Alamat
     {
         return $this->provinsi;
     }
+
+    public function isEqual(?Alamat $other): bool
+    {
+        return $other != null
+            && $this->getJalan() === $other->getJalan()
+            && $this->getKecamatan()->getId() === $other->getKecamatan()->getId()
+            && $this->getKotaKab()->getId() === $other->getKotaKab()->getId()
+            && $this->getProvinsi()->getId() === $other->getProvinsi()->getId();
+    }
 }

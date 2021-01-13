@@ -42,7 +42,7 @@ class ReportRepositoryImpl implements ReportRepository
      */
     public function getByPelapor(User $user): array
     {
-        $allReport = \App\Report::whereIdPelapor($user->getId());
+        $allReport = \App\Report::whereIdPelapor($user->getId()->getValue())->get();
         $listReport = [];
 
         foreach ($allReport as $report) {

@@ -28,9 +28,9 @@ class Id
         return $this->value;
     }
 
-    public function isEqual(Id $other): bool
+    public function isEqual(?Id $other): bool
     {
-        return $this->getValue() === $other->getValue();
+        return $other != null && $this->getValue() === $other->getValue();
     }
 
     public function __toString(): string

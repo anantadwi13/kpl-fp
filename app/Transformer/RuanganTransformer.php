@@ -49,12 +49,12 @@ class RuanganTransformer
             throw new UserNotAllowedException();
         }
 
-        $alamat = new Alamat(
+        $alamat = $el->alamat_jalan && $el->alamat_kecamatan ? new Alamat(
             $el->alamat_jalan,
             $this->kecamatanTransformer->fromEloquent($el->kecamatan),
             $this->kotaKabTransformer->fromEloquent($el->kecamatan->kotakab),
             $this->provinsiTransformer->fromEloquent($el->kecamatan->kotakab->provinsi),
-        );
+        ) : null;
 
         switch ($el->status) {
             case \App\Ruangan::STATUS_MAINTENANCE:
@@ -66,25 +66,30 @@ class RuanganTransformer
 
         return new Ruangan(
             new Id($el->id),
-            $el->kode,
             $el->nama,
             $penyedia,
-            $alamat,
             $status,
-            $this->kategoriTransformer->fromEloquent($el->kategori)
+            $this->kategoriTransformer->fromEloquent($el->kategori),
+            $el->kode,
+            $alamat,
         );
     }
 
     public function toEloquent(Ruangan $data): \App\Ruangan
     {
         $el = new \App\Ruangan();
-        $el->id = $data->getId()->getValue();
-        $el->kode = $data->getKode();
+        $el->id = !$data->getId()->isEqual(Id::UNSET()) ? $data->getId()->getValue() : null;
         $el->nama = $data->getNama();
         $el->id_user = $data->getPenyedia()->getId()->getValue();
-        $el->alamat_jalan = $data->getAlamat()->getJalan();
-        $el->alamat_kecamatan = $data->getAlamat()->getKecamatan()->getId()->getValue();
         $el->id_kategori = $data->getKategori()->getId()->getValue();
+
+        if ($data->getKode()) {
+            $el->kode = $data->getKode();
+        }
+        if ($data->getAlamat()) {
+            $el->alamat_jalan = $data->getAlamat()->getJalan();
+            $el->alamat_kecamatan = $data->getAlamat()->getKecamatan()->getId()->getValue();
+        }
 
         switch ($data->getStatus()->getValue()) {
             case RuanganStatus::MAINTENANCE()->getValue():

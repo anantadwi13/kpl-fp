@@ -17,7 +17,7 @@ class KategoriTransformer
     public function toEloquent(Kategori $data): \App\Kategori
     {
         $el = new \App\Kategori();
-        $el->id = $data->getId()->getValue();
+        $el->id = !$data->getId()->isEqual(Id::UNSET()) ? $data->getId()->getValue() : null;
         $el->nama = $data->getNama();
 
         return $el;

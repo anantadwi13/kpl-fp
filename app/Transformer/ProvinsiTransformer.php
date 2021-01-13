@@ -22,7 +22,7 @@ class ProvinsiTransformer
     public function toEloquent(Provinsi $data): \App\Provinsi
     {
         $el = new \App\Provinsi();
-        $el->id = $data->getId()->getValue();
+        $el->id = !$data->getId()->isEqual(Id::UNSET()) ? $data->getId()->getValue() : null;
         $el->nama = $data->getNama();
         return $el;
     }

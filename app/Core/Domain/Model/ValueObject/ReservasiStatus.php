@@ -37,4 +37,10 @@ class ReservasiStatus
     {
         return $this->value;
     }
+
+    public function isEqual(?ReservasiStatus $other): bool
+    {
+        return $other != null
+            && $this->getValue() === $other->getValue();
+    }
 }

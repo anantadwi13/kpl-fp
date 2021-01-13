@@ -36,4 +36,10 @@ class Acara
         return $this->deskripsi;
     }
 
+    public function isEqual(?Acara $other): bool
+    {
+        return $other != null
+            && $this->getNama() === $other->getNama()
+            && $this->getDeskripsi() === $other->getDeskripsi();
+    }
 }

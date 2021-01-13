@@ -111,7 +111,7 @@ class UserTransformer
             throw new UserUnknownException();
         }
 
-        $el->id = $data->getId()->getValue();
+        $el->id = !$data->getId()->isEqual(Id::UNSET()) ? $data->getId()->getValue() : null;
         $el->nama = $data->getNama();
         $el->username = $data->getUsername();
         $el->email = $data->getEmail();
