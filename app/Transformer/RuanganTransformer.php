@@ -8,6 +8,7 @@ use App\Core\Domain\Exception\UserNotAllowedException;
 use App\Core\Domain\Model\Entity\Ruangan;
 use App\Core\Domain\Model\Entity\UserPenyedia;
 use App\Core\Domain\Model\ValueObject\Alamat;
+use App\Core\Domain\Model\ValueObject\Id;
 use App\Core\Domain\Model\ValueObject\RuanganStatus;
 
 class RuanganTransformer
@@ -64,7 +65,7 @@ class RuanganTransformer
         }
 
         return new Ruangan(
-            $el->id,
+            new Id($el->id),
             $el->kode,
             $el->nama,
             $penyedia,
@@ -77,13 +78,13 @@ class RuanganTransformer
     public function toEloquent(Ruangan $data): \App\Ruangan
     {
         $el = new \App\Ruangan();
-        $el->id = $data->getId();
+        $el->id = $data->getId()->getValue();
         $el->kode = $data->getKode();
         $el->nama = $data->getNama();
-        $el->id_user = $data->getPenyedia()->getId();
+        $el->id_user = $data->getPenyedia()->getId()->getValue();
         $el->alamat_jalan = $data->getAlamat()->getJalan();
-        $el->alamat_kecamatan = $data->getAlamat()->getKecamatan()->getId();
-        $el->id_kategori = $data->getKategori()->getId();
+        $el->alamat_kecamatan = $data->getAlamat()->getKecamatan()->getId()->getValue();
+        $el->id_kategori = $data->getKategori()->getId()->getValue();
 
         switch ($data->getStatus()->getValue()) {
             case RuanganStatus::MAINTENANCE()->getValue():

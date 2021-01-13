@@ -2,19 +2,21 @@
 
 namespace App\Core\Domain\Model\Entity;
 
+use App\Core\Domain\Model\ValueObject\Id;
+
 class Provinsi
 {
-    private int $id;
+    private Id $id;
     private int $kodeProvinsi;
     private string $nama;
 
     /**
      * Provinsi constructor.
-     * @param int $id
+     * @param Id $id
      * @param int $kodeProvinsi
      * @param string $nama
      */
-    public function __construct(int $id, int $kodeProvinsi, string $nama)
+    public function __construct(Id $id, int $kodeProvinsi, string $nama)
     {
         $this->id = $id;
         $this->kodeProvinsi = $kodeProvinsi;
@@ -22,9 +24,9 @@ class Provinsi
     }
 
     /**
-     * @return int
+     * @return Id
      */
-    public function getId(): int
+    public function getId(): Id
     {
         return $this->id;
     }

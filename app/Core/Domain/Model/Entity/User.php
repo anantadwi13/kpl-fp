@@ -3,11 +3,12 @@
 namespace App\Core\Domain\Model\Entity;
 
 use App\Core\Domain\Model\ValueObject\Alamat;
+use App\Core\Domain\Model\ValueObject\Id;
 use App\Core\Domain\Model\ValueObject\UserStatus;
 
 abstract class User
 {
-    private int $id;
+    private Id $id;
     private string $nama;
     private string $username;
     private string $email;
@@ -19,7 +20,7 @@ abstract class User
 
     /**
      * User constructor.
-     * @param int $id
+     * @param Id $id
      * @param string $nama
      * @param string $username
      * @param string $email
@@ -30,7 +31,7 @@ abstract class User
      * @param string|null $hashedPassword
      */
     public function __construct(
-        int $id,
+        Id $id,
         string $nama,
         string $username,
         string $email,
@@ -52,9 +53,9 @@ abstract class User
     }
 
     /**
-     * @return int
+     * @return Id
      */
-    public function getId(): int
+    public function getId(): Id
     {
         return $this->id;
     }

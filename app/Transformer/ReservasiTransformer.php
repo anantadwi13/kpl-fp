@@ -8,6 +8,7 @@ use App\Core\Domain\Exception\UserNotAllowedException;
 use App\Core\Domain\Model\Entity\Reservasi;
 use App\Core\Domain\Model\Entity\UserPeminjam;
 use App\Core\Domain\Model\ValueObject\Acara;
+use App\Core\Domain\Model\ValueObject\Id;
 use App\Core\Domain\Model\ValueObject\ReservasiStatus;
 
 class ReservasiTransformer
@@ -48,7 +49,7 @@ class ReservasiTransformer
         }
 
         return new Reservasi(
-            $el->id,
+            new Id($el->id),
             $this->ruanganTransformer->fromEloquent($el->ruangan),
             $peminjam,
             $acara,
@@ -61,9 +62,9 @@ class ReservasiTransformer
     public function toEloquent(Reservasi $data): \App\Reservasi
     {
         $el = new \App\Reservasi();
-        $el->id = $data->getId();
-        $el->id_ruangan = $data->getRuangan()->getId();
-        $el->id_user = $data->getPeminjam()->getId();
+        $el->id = $data->getId()->getValue();
+        $el->id_ruangan = $data->getRuangan()->getId()->getValue();
+        $el->id_user = $data->getPeminjam()->getId()->getValue();
         $el->nama_acara = $data->getAcara()->getNama();
         $el->deskripsi_acara = $data->getAcara()->getDeskripsi();
         $el->time_start = $data->getMulai()->format("Y-m-d H:i:s");

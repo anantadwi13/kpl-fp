@@ -5,6 +5,7 @@ namespace App\Transformer;
 
 
 use App\Core\Domain\Model\Entity\Provinsi;
+use App\Core\Domain\Model\ValueObject\Id;
 
 class ProvinsiTransformer
 {
@@ -12,7 +13,7 @@ class ProvinsiTransformer
     public function fromEloquent(\App\Provinsi $el): Provinsi
     {
         return new Provinsi(
-            $el->id,
+            new Id($el->id),
             $el->id,
             $el->nama
         );
@@ -21,7 +22,7 @@ class ProvinsiTransformer
     public function toEloquent(Provinsi $data): \App\Provinsi
     {
         $el = new \App\Provinsi();
-        $el->id = $data->getId();
+        $el->id = $data->getId()->getValue();
         $el->nama = $data->getNama();
         return $el;
     }

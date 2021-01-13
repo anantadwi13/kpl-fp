@@ -10,6 +10,7 @@ use App\Core\Domain\Model\Entity\UserAdmin;
 use App\Core\Domain\Model\Entity\UserPeminjam;
 use App\Core\Domain\Model\Entity\UserPenyedia;
 use App\Core\Domain\Model\ValueObject\Alamat;
+use App\Core\Domain\Model\ValueObject\Id;
 use App\Core\Domain\Model\ValueObject\UserStatus;
 
 class UserTransformer
@@ -57,7 +58,7 @@ class UserTransformer
         switch ($el->tipe_akun) {
             case \App\User::TYPE_ADMIN:
                 return new UserAdmin(
-                    $el->id,
+                    new Id($el->id),
                     $el->nama,
                     $el->username,
                     $el->email,
@@ -69,7 +70,7 @@ class UserTransformer
                 );
             case \App\User::TYPE_PENYEDIA:
                 return new UserPenyedia(
-                    $el->id,
+                    new Id($el->id),
                     $el->nama,
                     $el->username,
                     $el->email,
@@ -81,7 +82,7 @@ class UserTransformer
                 );
             case \App\User::TYPE_PEMINJAM:
                 return new UserPeminjam(
-                    $el->id,
+                    new Id($el->id),
                     $el->nama,
                     $el->username,
                     $el->email,
@@ -110,14 +111,14 @@ class UserTransformer
             throw new UserUnknownException();
         }
 
-        $el->id = $data->getId();
+        $el->id = $data->getId()->getValue();
         $el->nama = $data->getNama();
         $el->username = $data->getUsername();
         $el->email = $data->getEmail();
         $el->no_identitas = $data->getNoIdentitas();
         $el->nohp = $data->getNoHp();
         $el->alamat_jalan = $data->getAlamat()->getJalan();
-        $el->alamat_kecamatan = $data->getAlamat()->getKecamatan()->getId();
+        $el->alamat_kecamatan = $data->getAlamat()->getKecamatan()->getId()->getValue();
 
         if ($data->getHashedPassword()) {
             $el->password = $data->getHashedPassword();

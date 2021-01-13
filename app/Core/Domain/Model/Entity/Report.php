@@ -4,11 +4,12 @@
 namespace App\Core\Domain\Model\Entity;
 
 
+use App\Core\Domain\Model\ValueObject\Id;
 use App\Core\Domain\Model\ValueObject\ReportStatus;
 
 class Report
 {
-    private int $id;
+    private Id $id;
     private User $pelapor;
     private User $dilapor;
     private string $subject;
@@ -17,7 +18,7 @@ class Report
 
     /**
      * Report constructor.
-     * @param int $id
+     * @param Id $id
      * @param User $pelapor
      * @param User $dilapor
      * @param string $subject
@@ -25,7 +26,7 @@ class Report
      * @param ReportStatus $status
      */
     public function __construct(
-        int $id,
+        Id $id,
         User $pelapor,
         User $dilapor,
         string $subject,
@@ -41,9 +42,9 @@ class Report
     }
 
     /**
-     * @return int
+     * @return Id
      */
-    public function getId(): int
+    public function getId(): Id
     {
         return $this->id;
     }

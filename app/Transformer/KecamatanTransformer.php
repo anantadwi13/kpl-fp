@@ -5,6 +5,7 @@ namespace App\Transformer;
 
 
 use App\Core\Domain\Model\Entity\Kecamatan;
+use App\Core\Domain\Model\ValueObject\Id;
 
 class KecamatanTransformer
 {
@@ -23,16 +24,16 @@ class KecamatanTransformer
     {
         $kotaKab = $el->kotakab ? $this->kotaKabTransformer->fromEloquent($el->kotakab) : null;
 
-        return new Kecamatan($el->id, $el->kode_kecamatan, $el->nama, $kotaKab);
+        return new Kecamatan(new Id($el->id), $el->kode_kecamatan, $el->nama, $kotaKab);
     }
 
     public function toEloquent(Kecamatan $data): \App\Kecamatan
     {
         $el = new \App\Kecamatan();
-        $el->id = $data->getId();
+        $el->id = $data->getId()->getValue();
         $el->nama = $data->getNama();
         $el->kode_kecamatan = $data->getKodeKecamatan();
-        $el->id_kota = $data->getKotaKab() ? $data->getKotaKab()->getId() : null;
+        $el->id_kota = $data->getKotaKab() ? $data->getKotaKab()->getId()->getValue() : null;
         return $el;
     }
 }

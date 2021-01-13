@@ -2,21 +2,23 @@
 
 namespace App\Core\Domain\Model\Entity;
 
+use App\Core\Domain\Model\ValueObject\Id;
+
 class Kecamatan
 {
-    private int $id;
+    private Id $id;
     private int $kodeKecamatan;
     private string $nama;
     private ?KotaKab $kotaKab;
 
     /**
      * Kecamatan constructor.
-     * @param int $id
+     * @param Id $id
      * @param int $kodeKecamatan
      * @param string $nama
      * @param KotaKab|null $kotaKab
      */
-    public function __construct(int $id, int $kodeKecamatan, string $nama, ?KotaKab $kotaKab = null)
+    public function __construct(Id $id, int $kodeKecamatan, string $nama, ?KotaKab $kotaKab = null)
     {
         $this->id = $id;
         $this->kodeKecamatan = $kodeKecamatan;
@@ -25,9 +27,9 @@ class Kecamatan
     }
 
     /**
-     * @return int
+     * @return Id
      */
-    public function getId(): int
+    public function getId(): Id
     {
         return $this->id;
     }

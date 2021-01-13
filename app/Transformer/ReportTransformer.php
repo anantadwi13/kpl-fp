@@ -5,6 +5,7 @@ namespace App\Transformer;
 
 
 use App\Core\Domain\Model\Entity\Report;
+use App\Core\Domain\Model\ValueObject\Id;
 use App\Core\Domain\Model\ValueObject\ReportStatus;
 
 class ReportTransformer
@@ -31,7 +32,7 @@ class ReportTransformer
         }
 
         return new Report(
-            $el->id,
+            new Id($el->id),
             $this->userTransformer->fromEloquent($el->pelapor),
             $this->userTransformer->fromEloquent($el->dilapor),
             $el->subject,
@@ -43,9 +44,9 @@ class ReportTransformer
     public function toEloquent(Report $data): \App\Report
     {
         $el = new \App\Report();
-        $el->id = $data->getId();
-        $el->id_pelapor = $data->getPelapor()->getId();
-        $el->id_dilapor = $data->getDilapor()->getId();
+        $el->id = $data->getId()->getValue();
+        $el->id_pelapor = $data->getPelapor()->getId()->getValue();
+        $el->id_dilapor = $data->getDilapor()->getId()->getValue();
         $el->subject = $data->getSubject();
         $el->isi = $data->getIsi();
 

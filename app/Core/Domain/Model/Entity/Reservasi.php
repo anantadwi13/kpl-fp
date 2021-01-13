@@ -5,12 +5,13 @@ namespace App\Core\Domain\Model\Entity;
 
 
 use App\Core\Domain\Model\ValueObject\Acara;
+use App\Core\Domain\Model\ValueObject\Id;
 use App\Core\Domain\Model\ValueObject\ReservasiStatus;
 use DateTime;
 
 class Reservasi
 {
-    private int $id;
+    private Id $id;
     private Ruangan $ruangan;
     private UserPeminjam $peminjam;
     private Acara $acara;
@@ -20,7 +21,7 @@ class Reservasi
 
     /**
      * Reservasi constructor.
-     * @param int $id
+     * @param Id $id
      * @param Ruangan $ruangan
      * @param UserPeminjam $peminjam
      * @param Acara $acara
@@ -29,7 +30,7 @@ class Reservasi
      * @param ReservasiStatus $status
      */
     public function __construct(
-        int $id,
+        Id $id,
         Ruangan $ruangan,
         UserPeminjam $peminjam,
         Acara $acara,
@@ -47,9 +48,9 @@ class Reservasi
     }
 
     /**
-     * @return int
+     * @return Id
      */
-    public function getId(): int
+    public function getId(): Id
     {
         return $this->id;
     }

@@ -3,11 +3,12 @@
 namespace App\Core\Domain\Model\Entity;
 
 use App\Core\Domain\Model\ValueObject\Alamat;
+use App\Core\Domain\Model\ValueObject\Id;
 use App\Core\Domain\Model\ValueObject\RuanganStatus;
 
 class Ruangan
 {
-    private int $id;
+    private Id $id;
     private string $kode;
     private string $nama;
     private UserPenyedia $penyedia;
@@ -17,7 +18,7 @@ class Ruangan
 
     /**
      * Ruangan constructor.
-     * @param int $id
+     * @param Id $id
      * @param string $kode
      * @param string $nama
      * @param UserPenyedia $penyedia
@@ -26,7 +27,7 @@ class Ruangan
      * @param Kategori $kategori
      */
     public function __construct(
-        int $id,
+        Id $id,
         string $kode,
         string $nama,
         UserPenyedia $penyedia,
@@ -44,9 +45,9 @@ class Ruangan
     }
 
     /**
-     * @return int
+     * @return Id
      */
-    public function getId(): int
+    public function getId(): Id
     {
         return $this->id;
     }
