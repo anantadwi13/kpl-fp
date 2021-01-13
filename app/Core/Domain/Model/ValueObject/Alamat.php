@@ -64,8 +64,8 @@ class Alamat
     {
         return $other != null
             && $this->getJalan() === $other->getJalan()
-            && $this->getKecamatan()->getId() === $other->getKecamatan()->getId()
-            && $this->getKotaKab()->getId() === $other->getKotaKab()->getId()
-            && $this->getProvinsi()->getId() === $other->getProvinsi()->getId();
+            && $this->getKecamatan()->getId()->isEqual($other->getKecamatan()->getId())
+            && $this->getKotaKab()->getId()->isEqual($other->getKotaKab()->getId())
+            && $this->getProvinsi()->getId()->isEqual($other->getProvinsi()->getId());
     }
 }
