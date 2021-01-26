@@ -8,6 +8,7 @@ use App\Core\Domain\Model\Entity\Kecamatan;
 use App\Core\Domain\Model\Entity\KotaKab;
 use App\Core\Domain\Model\Entity\Provinsi;
 use App\Core\Domain\Model\Entity\Ruangan;
+use App\Core\Domain\Model\Entity\UserAdmin;
 use App\Core\Domain\Model\Entity\UserPeminjam;
 use App\Core\Domain\Model\Entity\UserPenyedia;
 use App\Core\Domain\Model\ValueObject\Alamat;
@@ -129,8 +130,49 @@ class RuanganEntityTest extends TestCase
             );
 
             $this->assertTrue(false);
+            return;
         } catch (\TypeError $exception){
+
+        }
+
+        try {
+            $userAdmin = new UserAdmin(
+                new Id(2),
+                "Peminjam 1",
+                "peminjam",
+                "peminjam@email.com",
+                "3578192836123456",
+                "081234567890",
+                $this->alamat,
+                UserStatus::ACTIVE()
+            );
+
+            new Ruangan(
+                Id::UNSET(),
+                "Ruangan A",
+                $userAdmin,
+                RuanganStatus::AVAILABLE(),
+                $this->kategori,
+            );
+
+            $this->assertTrue(false);
+            return;
+        } catch (\TypeError $exception){
+
+        }
+
+        try {
+            new Ruangan(
+                Id::UNSET(),
+                "Ruangan A",
+                $this->penyedia,
+                RuanganStatus::AVAILABLE(),
+                $this->kategori,
+            );
+
             $this->assertTrue(true);
+        } catch (\TypeError $exception){
+            $this->assertTrue(false);
         }
     }
 }
