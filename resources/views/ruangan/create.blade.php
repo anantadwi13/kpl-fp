@@ -56,8 +56,9 @@
                             <label for="kodeRuangan">Kategori/Jenis Ruangan</label>
                             <select class="form-control select2{{ $errors->has('kategori') ? ' is-invalid' : '' }}" name="kategori" style="width: 100%;" tabindex="-1" aria-hidden="true">
                                 <option disabled selected>-</option>
+                                @php /* @var \App\Core\Domain\Model\Entity\Kategori[] $kategori */ @endphp
                                 @foreach($kategori as $item)
-                                    <option value="{{$item->id}}" @if(old('kategori')==$item->id) selected @endif>{{$item->nama}}</option>
+                                    <option value="{{$item->getId()}}" @if(old('kategori')==$item->getId()) selected @endif>{{$item->getNama()}}</option>
                                 @endforeach
                             </select>
 
@@ -81,8 +82,9 @@
                             <label for="provinsi">Provinsi (Opsional)</label>
                             <select id="provinsi" class="form-control select2{{ $errors->has('provinsi') ? ' is-invalid' : '' }}" name="provinsi">
                                 <option value="" selected>-</option>
+                                @php /* @var \App\Core\Domain\Model\Entity\Provinsi[] $provinsi */ @endphp
                                 @foreach($provinsi as $item)
-                                    <option value="{{$item->id}}" @if(old('provinsi')==$item->id) selected @endif>{{$item->nama}}</option>
+                                    <option value="{{$item->getId()}}" @if(old('provinsi')==$item->getId()) selected @endif>{{$item->getNama()}}</option>
                                 @endforeach
                             </select>
 
@@ -96,8 +98,9 @@
                             <label for="kota">Kota/Kabupaten (Opsional)</label>
                             <select id="kota" class="form-control select2{{ $errors->has('kota') ? ' is-invalid' : '' }}" name="kota">
                                 <option value="" disabled selected>-</option>
+                                @php /* @var \App\Core\Domain\Model\Entity\KotaKab[] $kota */ @endphp
                                 @foreach($kota as $item)
-                                    <option value="{{$item->id}}" @if(old('kota')==$item->id) selected @endif>{{$item->nama}}</option>
+                                    <option value="{{$item->getId()}}" @if(old('kota')==$item->getId()) selected @endif>{{$item->getNama()}}</option>
                                 @endforeach
                             </select>
 
@@ -111,8 +114,9 @@
                             <label for="kecamatan">Kecamatan (Opsional)</label>
                             <select id="kecamatan" class="form-control select2{{ $errors->has('kecamatan') ? ' is-invalid' : '' }}" name="kecamatan">
                                 <option value="" disabled selected>-</option>
+                                @php /* @var \App\Core\Domain\Model\Entity\Kecamatan[] $kecamatan */ @endphp
                                 @foreach($kecamatan as $item)
-                                    <option value="{{$item->id}}" @if(old('kecamatan')==$item->id) selected @endif>{{$item->nama}}</option>
+                                    <option value="{{$item->getId()}}" @if(old('kecamatan')==$item->getId()) selected @endif>{{$item->getNama()}}</option>
                                 @endforeach
                             </select>
 

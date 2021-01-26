@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Report;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
@@ -36,9 +37,9 @@ class ReportController extends Controller
 
         if (empty($user) || !$user->exists)
             return redirect()->back()->withErrors(['User tidak ditemukan!']);
-        if (\Auth::user()->tipe_akun == $user->tipe_akun)
+        if (Auth::user()->tipe_akun == $user->tipe_akun)
             return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
-        if ($user->id == \Auth::user()->id)
+        if ($user->id == Auth::user()->id)
             return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
         if ($user->tipe_akun == User::TYPE_ADMIN)
             return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
@@ -64,16 +65,16 @@ class ReportController extends Controller
 
         if (empty($user) || !$user->exists)
             return redirect()->back()->withErrors(['User tidak ditemukan!']);
-        if (\Auth::user()->tipe_akun == $user->tipe_akun)
+        if (Auth::user()->tipe_akun == $user->tipe_akun)
             return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
-        if ($user->id == \Auth::user()->id)
+        if ($user->id == Auth::user()->id)
             return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
         if ($user->tipe_akun == User::TYPE_ADMIN)
             return redirect(route('dashboard.index'))->withErrors(['Unauthorized page!']);
 
 
         $report = new Report();
-        $report->id_pelapor = \Auth::user()->id;
+        $report->id_pelapor = Auth::user()->id;
         $report->id_dilapor = $user->id;
         $report->subject = $request->subject;
         $report->isi = $request->isi;
@@ -96,7 +97,7 @@ class ReportController extends Controller
      */
     public function show(Report $report)
     {
-        $user = \Auth::user();
+        $user = Auth::user();
         $report->status = Report::STATUS_READ;
         $report->update();
         return view('report.show')->with(compact('report','user'));

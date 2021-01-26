@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\User;
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class PeminjamOnly
 {
@@ -16,9 +17,9 @@ class PeminjamOnly
      */
     public function handle($request, Closure $next)
     {
-        if (\Auth::check() && (\Auth::user()->tipe_akun == User::TYPE_PEMINJAM || \Auth::user()->tipe_akun == User::TYPE_ADMIN)) {
-            if (\Auth::user()->status != User::STATUS_ACTIVE) {
-                \Auth::logout();
+        if (Auth::check() && (Auth::user()->tipe_akun == User::TYPE_PEMINJAM || Auth::user()->tipe_akun == User::TYPE_ADMIN)) {
+            if (Auth::user()->status != User::STATUS_ACTIVE) {
+                Auth::logout();
                 return redirect(route('dashboard.index'))->withErrors(['User tidak aktif!']);
             }
             return $next($request);

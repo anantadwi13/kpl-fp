@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', 'DashboardController@index');
 
 Route::get('login','Auth\LoginController@showLoginForm')->name('login');
@@ -30,7 +32,15 @@ Route::group(['prefix'=>'dashboard'], function (){
     Route::get('','DashboardController@index')->name('dashboard.index');
     Route::resource('kategori','KategoriController');
     Route::resource('user','UserController')->except(['create','store']);
-    Route::resource('ruangan','RuanganController');
+
+    Route::get('ruangan','RuanganController@index')->name('ruangan.index');
+    Route::get('ruangan/create','RuanganController@create')->name('ruangan.create');
+    Route::post('ruangan','RuanganController@store')->name('ruangan.store');
+    Route::get('ruangan/{ruangan}','RuanganController@show')->name('ruangan.show');
+    Route::get('ruangan/{ruangan}/edit','RuanganController@edit')->name('ruangan.edit');
+    Route::put('ruangan/{ruangan}','RuanganController@update')->name('ruangan.update');
+    Route::delete('ruangan/{ruangan}','RuanganController@destroy')->name('ruangan.destroy');
+
     Route::resource('reservasi','ReservasiController');
     Route::resource('report','ReportController');
     Route::post('reservasi/action/{reservasi}','ReservasiController@action')->name('reservasi.action');

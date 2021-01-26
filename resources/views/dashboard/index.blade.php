@@ -20,16 +20,12 @@
         @endif
     </div>
     <div class="row">
+        @if($totalRuangan !== null)
         <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-info">
                 <div class="inner">
-                    @if(Auth::check() && Auth::user()->tipe_akun == \App\User::TYPE_PENYEDIA)
-                        <h3>{{\App\Ruangan::whereIdUser(Auth::user()->id)->count()}}</h3>
-                    @else
-                        <h3>{{\App\Ruangan::count()}}</h3>
-                    @endif
-
+                    <h3>{{$totalRuangan}}</h3>
                     <p>Ruangan</p>
                 </div>
                 <div class="icon">
@@ -39,25 +35,13 @@
             </div>
         </div>
         <!-- ./col -->
-        @if(Auth::check())
+        @endif
+            @if($totalReservasi !== null)
         <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-success">
                 <div class="inner">
-                    @if(Auth::check() && Auth::user()->tipe_akun == \App\User::TYPE_PENYEDIA)
-                        @php
-                            $totalReservasi = 0;
-                            foreach (\App\Ruangan::whereIdUser(Auth::user()->id)->get() as $ruangan)
-                                foreach ($ruangan->reservasi as $reservasi)
-                                    $totalReservasi++;
-                        @endphp
-                        <h3>{{$totalReservasi}}</h3>
-                    @elseif(Auth::check() && Auth::user()->tipe_akun == \App\User::TYPE_PEMINJAM)
-                        <h3>{{\App\Reservasi::whereIdUser(Auth::user()->id)->count()}}</h3>
-                    @else
-                        <h3>{{\App\Reservasi::count()}}</h3>
-                    @endif
-
+                    <h3>{{$totalReservasi}}</h3>
                     <p>Reservasi</p>
                 </div>
                 <div class="icon">
@@ -67,14 +51,13 @@
             </div>
         </div>
         @endif
-        @if(!(Auth::check() && Auth::user()->tipe_akun == \App\User::TYPE_PENYEDIA))
+        @if($totalKategori !== null)
         <!-- ./col -->
         <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-warning">
                 <div class="inner">
-                    <h3>{{\App\Kategori::count()}}</h3>
-
+                    <h3>{{$totalKategori}}</h3>
                     <p>Kategori</p>
                 </div>
                 <div class="icon">
@@ -84,14 +67,13 @@
             </div>
         </div>
         @endif
-        @if(Auth::check() && Auth::user()->tipe_akun == \App\User::TYPE_ADMIN)
+        @if($totalUser !== null)
             <!-- ./col -->
             <div class="col-lg-3 col-6">
                 <!-- small box -->
                 <div class="small-box bg-secondary">
                     <div class="inner">
-                        <h3>{{\App\User::count()}}</h3>
-
+                        <h3>{{$totalUser}}</h3>
                         <p>User</p>
                     </div>
                     <div class="icon">
@@ -101,12 +83,13 @@
                 </div>
             </div>
             <!-- ./col -->
+        @endif
+        @if($totalReport !== null)
             <div class="col-lg-3 col-6">
                 <!-- small box -->
                 <div class="small-box bg-danger">
                     <div class="inner">
-                        <h3>{{\App\Report::count()}}</h3>
-
+                        <h3>{{$totalReport}}</h3>
                         <p>Laporan</p>
                     </div>
                     <div class="icon">
@@ -115,7 +98,7 @@
                     <a href="{{route('report.index')}}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
-    @endif
+        @endif
     <!-- ./col -->
     </div>
 @endsection

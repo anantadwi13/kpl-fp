@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\User;
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class AdminOnly
 {
@@ -16,7 +17,7 @@ class AdminOnly
      */
     public function handle($request, Closure $next)
     {
-        if (\Auth::check() && (\Auth::user()->tipe_akun == User::TYPE_ADMIN))
+        if (Auth::check() && (Auth::user()->tipe_akun == User::TYPE_ADMIN))
             return $next($request);
         return redirect()->back()->withErrors('Unauthorized page!');
     }
